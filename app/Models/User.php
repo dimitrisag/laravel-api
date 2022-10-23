@@ -34,11 +34,22 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
+        'is_admin' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
+    }
+
+    // public function messages()
+    // {
+    //   return $this->hasMany(Message::class);
+    // }
 }

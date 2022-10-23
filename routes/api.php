@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\TokenController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,20 +17,11 @@ use App\Http\Controllers\Api\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get(
-    '/user', function (Request $request) {
-        return $request->user();
-    }
-);
+Route::post('/sanctum/token', TokenController::class);
 
-Route::post('auth/register', [AuthController::class, 'createUser']);
-Route::post('auth/login', [AuthController::class, 'loginUser']);
-Route::post('logout', [AuthController::class, 'logout']);
-
-Route::get(
-    'test', function () {
-        return response()->json('test');
-    }
-);
-
-
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/users/auth', AuthController::class);
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
+    Route::get('/users', [UserController::class, 'index']);
+});
